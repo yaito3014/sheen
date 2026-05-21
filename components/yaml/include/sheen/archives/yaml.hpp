@@ -63,7 +63,11 @@ private:
   std::string& sink_;
 };
 
+#if defined(SHEEN_YAML_HAS_DEFAULT_PARSER)
 template<yaml::yaml_parser P = yaml::default_parser>
+#else
+template<yaml::yaml_parser P>
+#endif
 class yaml_input_archive {
 public:
   using parser_type = P;

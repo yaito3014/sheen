@@ -16,7 +16,7 @@ public:
   error const& info() const noexcept { return error_; }
 
 private:
-  static std::string detail_or_default(error const& e) { return e.detail.empty() ? std::string{"sheen::exception"} : e.detail; }
+  static std::string detail_or_default(error const& e) { return e.detail.empty() ? "sheen::exception" : e.detail; }
 
   error error_;
 };

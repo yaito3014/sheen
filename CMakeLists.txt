@@ -53,6 +53,7 @@ if(SHEEN_BUILD_YAML)
 endif()
 
 if(SHEEN_BUILD_TESTING)
+    enable_testing()
     add_subdirectory(test)
 endif()
 

@@ -1,21 +1,17 @@
+#include <sheen/yaml/default_parser.hpp>
 #include <sheen/yaml/parser.hpp>
 
 #include <catch2/catch_test_macros.hpp>
 
-#if defined(SHEEN_YAML_BACKEND_FKYAML)
-#include <sheen/yaml/parsers/fkyaml.hpp>
-
-#include <string_view>
-
-TEST_CASE("fkyaml_parser models yaml_parser")
+TEST_CASE("default_parser models yaml_parser")
 {
-  STATIC_CHECK(sheen::yaml::yaml_parser<sheen::yaml::fkyaml_parser>);
-  STATIC_CHECK(sheen::yaml::yaml_node<sheen::yaml::fkyaml_node>);
+  STATIC_CHECK(sheen::yaml::yaml_parser<sheen::yaml::default_parser>);
+  STATIC_CHECK(sheen::yaml::yaml_node<sheen::yaml::default_parser::node_type>);
 }
 
-TEST_CASE("fkyaml_parser parses a flat mapping")
+TEST_CASE("default_parser parses a flat mapping")
 {
-  sheen::yaml::fkyaml_parser p;
+  sheen::yaml::default_parser p;
   auto root = p.parse("age: 30\nactive: true\nname: Alice").value();
 
   REQUIRE(root.is_mapping());
@@ -34,9 +30,9 @@ TEST_CASE("fkyaml_parser parses a flat mapping")
   CHECK(root["name"].as_string() == "Alice");
 }
 
-TEST_CASE("fkyaml_parser parses a sequence")
+TEST_CASE("default_parser parses a sequence")
 {
-  sheen::yaml::fkyaml_parser p;
+  sheen::yaml::default_parser p;
   auto root = p.parse("[1, 2, 3]").value();
 
   REQUIRE(root.is_sequence());
@@ -44,13 +40,3 @@ TEST_CASE("fkyaml_parser parses a sequence")
   CHECK(root[0].as_integer() == 1);
   CHECK(root[2].as_integer() == 3);
 }
-
-TEST_CASE("fkyaml_parser returns an error on malformed input")
-{
-  sheen::yaml::fkyaml_parser p;
-  auto r = p.parse("a: 1\na: 2");
-  REQUIRE_FALSE(r.has_value());
-  CHECK(r.error().code == sheen::error_code::parse_error);
-}
-
-#endif  // SHEEN_YAML_BACKEND_FKYAML

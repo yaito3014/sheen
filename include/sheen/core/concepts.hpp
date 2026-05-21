@@ -10,8 +10,6 @@ namespace sheen {
 template<class Destination, class Source>
 concept writable = slot::writable<Destination, Source>;
 
-// std::string::value_type is char, so nested-value_type auto-detection is
-// wrong for containers. Proxies opt in by specialising this.
 template<class T>
 struct input_value : std::type_identity<std::remove_cvref_t<T>> {};
 
