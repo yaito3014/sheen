@@ -79,6 +79,24 @@ TEST_CASE("free serialize (ADL): rectangle → YAML")
   CHECK(out == "width: 4\nheight: 5\n");
 }
 
+TEST_CASE("yaml_output_archive dispatches user types via ar(value)")
+{
+  std::string out;
+  sheen::yaml_output_archive ar{out};
+  ex::point const p{1, 2};
+  ar(p);
+  CHECK(out == "x: 1\ny: 2\n");
+}
+
+TEST_CASE("yaml_output_archive variadic call composes single-arg invocations")
+{
+  std::string out;
+  sheen::yaml_output_archive ar{out};
+  int x = 1, y = 2;
+  ar(sheen::nvp("x", x), sheen::nvp("y", y));
+  CHECK(out == "x: 1\ny: 2\n");
+}
+
 TEST_CASE("user-type serialization is constexpr-clean")
 {
   STATIC_CHECK([] {

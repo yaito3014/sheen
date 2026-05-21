@@ -1,6 +1,7 @@
 #ifndef SHEEN_ARCHIVES_JSON_HPP
 #define SHEEN_ARCHIVES_JSON_HPP
 
+#include <sheen/core/dispatch.hpp>
 #include <sheen/core/dom.hpp>
 #include <sheen/core/error.hpp>
 #include <sheen/core/exception.hpp>
@@ -65,6 +66,17 @@ public:
       }
     }
     sink_.push_back('"');
+  }
+
+  template<class T>
+    requires serializable<T>
+  constexpr void operator()(T const& v) { save_to(*this, v); }
+
+  template<class... Ts>
+    requires (sizeof...(Ts) > 1)
+  constexpr void operator()(Ts&&... values)
+  {
+    (operator()(static_cast<Ts&&>(values)), ...);
   }
 
 private:
@@ -133,6 +145,17 @@ public:
       current_ = saved;
       throw;
     }
+  }
+
+  template<class T>
+    requires deserializable<T&>
+  constexpr void operator()(T& v) { load_from(*this, v); }
+
+  template<class... Ts>
+    requires (sizeof...(Ts) > 1)
+  constexpr void operator()(Ts&&... values)
+  {
+    (operator()(static_cast<Ts&&>(values)), ...);
   }
 
 private:

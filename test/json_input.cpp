@@ -68,11 +68,11 @@ struct point {
 
 }  // namespace ex
 
-TEST_CASE("json_input_archive drives a user type's intrusive serialize")
+TEST_CASE("json_input_archive dispatches user types via ar(value)")
 {
   sheen::json_input_archive ar{R"({"x":3,"y":4})"};
   ex::point p{};
-  p.serialize(ar);
+  ar(p);
   CHECK(p.x == 3);
   CHECK(p.y == 4);
 }
@@ -91,12 +91,26 @@ TEST_CASE("json_input_archive throws on type mismatch")
   CHECK_THROWS_AS(ar(sheen::nvp("value", v)), sheen::exception);
 }
 
+TEST_CASE("json_input_archive variadic call composes")
+{
+  sheen::json_input_archive ar{R"({"x":3,"y":4})"};
+  int x{};
+  int y{};
+  ar(sheen::nvp("x", x), sheen::nvp("y", y));
+  CHECK(x == 3);
+  CHECK(y == 4);
+}
+
+#if defined(SHEEN_JSON_HAS_JSON20)
+#include <sheen/json/parsers/json20.hpp>
+
 TEST_CASE("json_input_archive is constexpr-clean with json20")
 {
   STATIC_CHECK([] {
-    sheen::json_input_archive ar{R"({"x":3,"y":4})"};
+    sheen::json_input_archive<sheen::json::json20_parser> ar{R"({"x":3,"y":4})"};
     ex::point p{};
-    p.serialize(ar);
+    ar(p);
     return p.x == 3 && p.y == 4;
   }());
 }
+#endif

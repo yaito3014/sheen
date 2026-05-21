@@ -128,6 +128,28 @@ TEST_CASE("json_output_archive drives free serialize via ADL")
   CHECK(out == R"({"width":4,"height":5})");
 }
 
+TEST_CASE("json_output_archive dispatches user types via ar(value)")
+{
+  std::string out;
+  {
+    sheen::json_output_archive ar{out};
+    ex::point const p{1, 2};
+    ar(p);
+  }
+  CHECK(out == R"({"x":1,"y":2})");
+}
+
+TEST_CASE("json_output_archive variadic call composes single-arg invocations")
+{
+  std::string out;
+  {
+    sheen::json_output_archive ar{out};
+    int x = 1, y = 2;
+    ar(sheen::nvp("x", x), sheen::nvp("y", y));
+  }
+  CHECK(out == R"({"x":1,"y":2})");
+}
+
 TEST_CASE("json_output_archive is constexpr-clean")
 {
   STATIC_CHECK([] {
