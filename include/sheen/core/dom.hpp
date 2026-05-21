@@ -1,5 +1,5 @@
-#ifndef SHEEN_YAML_PARSER_HPP
-#define SHEEN_YAML_PARSER_HPP
+#ifndef SHEEN_CORE_DOM_HPP
+#define SHEEN_CORE_DOM_HPP
 
 #include <sheen/core/error.hpp>
 
@@ -9,17 +9,17 @@
 #include <expected>
 #include <string_view>
 
-namespace sheen::yaml {
+namespace sheen::dom {
 
 template<class N>
-concept yaml_node = requires(N const& n, std::size_t i, std::string_view key) {
+concept tree_node = requires(N const& n, std::size_t i, std::string_view key) {
   { n.is_null() } -> std::convertible_to<bool>;
   { n.is_boolean() } -> std::convertible_to<bool>;
   { n.is_integer() } -> std::convertible_to<bool>;
   { n.is_float() } -> std::convertible_to<bool>;
   { n.is_string() } -> std::convertible_to<bool>;
-  { n.is_sequence() } -> std::convertible_to<bool>;
-  { n.is_mapping() } -> std::convertible_to<bool>;
+  { n.is_list() } -> std::convertible_to<bool>;
+  { n.is_record() } -> std::convertible_to<bool>;
 
   { n.as_boolean() } -> std::convertible_to<bool>;
   { n.as_integer() } -> std::convertible_to<std::int64_t>;
@@ -33,12 +33,12 @@ concept yaml_node = requires(N const& n, std::size_t i, std::string_view key) {
 };
 
 template<class P>
-concept yaml_parser = requires(P& p, std::string_view src) {
+concept tree_parser = requires(P& p, std::string_view src) {
   typename P::node_type;
-  requires yaml_node<typename P::node_type>;
+  requires tree_node<typename P::node_type>;
   { p.parse(src) } -> std::same_as<std::expected<typename P::node_type, error>>;
 };
 
-}  // namespace sheen::yaml
+}  // namespace sheen::dom
 
-#endif  // SHEEN_YAML_PARSER_HPP
+#endif  // SHEEN_CORE_DOM_HPP

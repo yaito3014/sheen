@@ -1,8 +1,8 @@
 #ifndef SHEEN_YAML_PARSERS_YAMLCPP_HPP
 #define SHEEN_YAML_PARSERS_YAMLCPP_HPP
 
+#include <sheen/core/dom.hpp>
 #include <sheen/core/error.hpp>
-#include <sheen/yaml/parser.hpp>
 
 #include <yaml-cpp/yaml.h>
 
@@ -44,8 +44,8 @@ public:
   }
 
   bool is_string() const noexcept { return node_.IsScalar(); }
-  bool is_sequence() const noexcept { return node_.IsSequence(); }
-  bool is_mapping() const noexcept { return node_.IsMap(); }
+  bool is_list() const noexcept { return node_.IsSequence(); }
+  bool is_record() const noexcept { return node_.IsMap(); }
 
   bool as_boolean() const { return node_.as<bool>(); }
   std::int64_t as_integer() const { return node_.as<std::int64_t>(); }
@@ -79,7 +79,7 @@ public:
   }
 };
 
-static_assert(yaml_parser<yamlcpp_parser>);
+static_assert(dom::tree_parser<yamlcpp_parser>);
 
 }  // namespace sheen::yaml
 

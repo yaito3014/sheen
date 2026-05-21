@@ -5,7 +5,7 @@ find_dependency(slot CONFIG REQUIRED)
 
 include("${CMAKE_CURRENT_LIST_DIR}/sheen-core-targets.cmake")
 
-set(_sheen_supported_components yaml)
+set(_sheen_supported_components yaml json)
 
 foreach(_comp ${sheen_FIND_COMPONENTS})
     if(NOT _comp IN_LIST _sheen_supported_components)

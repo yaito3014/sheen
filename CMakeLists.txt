@@ -7,6 +7,11 @@ option(
     "build the YAML archive component (sheen::yaml)"
     ${PROJECT_IS_TOP_LEVEL}
 )
+option(
+    SHEEN_BUILD_JSON
+    "build the JSON archive component (sheen::json)"
+    ${PROJECT_IS_TOP_LEVEL}
+)
 option(SHEEN_BUILD_TESTING "build test" ${PROJECT_IS_TOP_LEVEL})
 option(SHEEN_INSTALL "generate install rules for sheen" ${PROJECT_IS_TOP_LEVEL})
 
@@ -50,6 +55,10 @@ add_library(sheen::sheen ALIAS sheen)
 
 if(SHEEN_BUILD_YAML)
     add_subdirectory(components/yaml)
+endif()
+
+if(SHEEN_BUILD_JSON)
+    add_subdirectory(components/json)
 endif()
 
 if(SHEEN_BUILD_TESTING)

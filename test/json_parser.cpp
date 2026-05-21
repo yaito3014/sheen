@@ -1,18 +1,18 @@
 #include <sheen/core/dom.hpp>
-#include <sheen/yaml/default_parser.hpp>
+#include <sheen/json/default_parser.hpp>
 
 #include <catch2/catch_test_macros.hpp>
 
-TEST_CASE("yaml default_parser models tree_parser")
+TEST_CASE("json default_parser models tree_parser")
 {
-  STATIC_CHECK(sheen::dom::tree_parser<sheen::yaml::default_parser>);
-  STATIC_CHECK(sheen::dom::tree_node<sheen::yaml::default_parser::node_type>);
+  STATIC_CHECK(sheen::dom::tree_parser<sheen::json::default_parser>);
+  STATIC_CHECK(sheen::dom::tree_node<sheen::json::default_parser::node_type>);
 }
 
-TEST_CASE("yaml default_parser parses a flat mapping")
+TEST_CASE("json default_parser parses a flat object")
 {
-  sheen::yaml::default_parser p;
-  auto root = p.parse("age: 30\nactive: true\nname: Alice").value();
+  sheen::json::default_parser p;
+  auto root = p.parse(R"({"age":30,"active":true,"name":"Alice"})").value();
 
   REQUIRE(root.is_record());
   CHECK(root.size() == 3);
@@ -30,9 +30,9 @@ TEST_CASE("yaml default_parser parses a flat mapping")
   CHECK(root["name"].as_string() == "Alice");
 }
 
-TEST_CASE("yaml default_parser parses a sequence")
+TEST_CASE("json default_parser parses an array")
 {
-  sheen::yaml::default_parser p;
+  sheen::json::default_parser p;
   auto root = p.parse("[1, 2, 3]").value();
 
   REQUIRE(root.is_list());
