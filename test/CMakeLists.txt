@@ -1,13 +1,6 @@
 include(CTest)
-include(FetchContent)
 
-FetchContent_Declare(
-    Catch2
-    GIT_REPOSITORY https://github.com/catchorg/Catch2
-    GIT_TAG v3.15.0
-    GIT_SHALLOW ON
-)
-FetchContent_MakeAvailable(Catch2)
+find_package(Catch2 REQUIRED)
 
 function(sheen_add_test test_name)
     set(name sheen_${test_name}_test)
