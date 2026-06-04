@@ -26,14 +26,7 @@ set_property(
 )
 
 if(SHEEN_JSON_ENABLE_JSON20)
-    include(FetchContent)
-    FetchContent_Declare(
-        json20
-        GIT_REPOSITORY https://github.com/yaito3014/json20
-        GIT_TAG main
-        GIT_SHALLOW ON
-    )
-    FetchContent_MakeAvailable(json20)
+    find_package(json20 REQUIRED)
     target_link_libraries(sheen_json INTERFACE yk::json20)
     target_compile_definitions(sheen_json INTERFACE SHEEN_JSON_HAS_JSON20)
 endif()

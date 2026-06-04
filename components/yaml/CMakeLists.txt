@@ -27,35 +27,13 @@ set_property(
 )
 
 if(SHEEN_YAML_ENABLE_FKYAML)
-    include(FetchContent)
-    if(NOT DEFINED FK_YAML_INSTALL)
-        set(FK_YAML_INSTALL ${SHEEN_INSTALL})
-    endif()
-    FetchContent_Declare(
-        fkYAML
-        GIT_REPOSITORY https://github.com/fktn-k/fkYAML
-        GIT_TAG v0.4.2
-        GIT_SHALLOW ON
-    )
-    FetchContent_MakeAvailable(fkYAML)
+    find_package(fkYAML REQUIRED)
     target_link_libraries(sheen_yaml INTERFACE fkYAML::fkYAML)
     target_compile_definitions(sheen_yaml INTERFACE SHEEN_YAML_HAS_FKYAML)
 endif()
 
 if(SHEEN_YAML_ENABLE_YAMLCPP)
-    include(FetchContent)
-    set(YAML_CPP_BUILD_TESTS OFF CACHE BOOL "" FORCE)
-    set(YAML_CPP_BUILD_TOOLS OFF CACHE BOOL "" FORCE)
-    set(YAML_CPP_BUILD_CONTRIB OFF CACHE BOOL "" FORCE)
-    set(YAML_CPP_INSTALL ${SHEEN_INSTALL} CACHE BOOL "" FORCE)
-    set(CMAKE_POLICY_VERSION_MINIMUM 3.5)
-    FetchContent_Declare(
-        yaml-cpp
-        GIT_REPOSITORY https://github.com/jbeder/yaml-cpp
-        GIT_TAG 0.8.0
-        GIT_SHALLOW ON
-    )
-    FetchContent_MakeAvailable(yaml-cpp)
+    find_package(yaml-cpp REQUIRED)
     target_link_libraries(sheen_yaml INTERFACE yaml-cpp::yaml-cpp)
     target_compile_definitions(sheen_yaml INTERFACE SHEEN_YAML_HAS_YAMLCPP)
 endif()

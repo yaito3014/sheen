@@ -36,19 +36,7 @@ target_sources(
             FILES ${SHEEN_HEADERS}
 )
 
-include(FetchContent)
-
-if(NOT DEFINED SLOT_INSTALL)
-    set(SLOT_INSTALL ${SHEEN_INSTALL})
-endif()
-
-FetchContent_Declare(
-    slot
-    GIT_REPOSITORY https://github.com/yaito3014/slot
-    GIT_TAG main
-    GIT_SHALLOW ON
-)
-FetchContent_MakeAvailable(slot)
+find_package(slot REQUIRED)
 target_link_libraries(sheen INTERFACE slot::slot)
 
 add_library(sheen::sheen ALIAS sheen)
