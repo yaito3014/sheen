@@ -1,6 +1,6 @@
 include(CTest)
 
-find_package(Catch2 REQUIRED)
+find_package(Catch2 3 REQUIRED)
 
 function(sheen_add_test test_name)
     set(name sheen_${test_name}_test)
