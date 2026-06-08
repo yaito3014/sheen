@@ -37,15 +37,10 @@ Backend per component is enabled via `SHEEN_<FORMAT>_ENABLE_<BACKEND>` and the d
 ## Building
 
 ```sh
-cmake --preset dev
-cmake --build --preset dev
-ctest --preset dev
+cmake -S . -B build
+cmake --build build
+ctest --test-dir build
 ```
-
-The library targets consume their dependencies via `find_package()` only; they
-do not fetch anything themselves. The `dev` preset makes a standalone clone
-self-contained by wiring in a FetchContent-backed dependency provider
-(`cmake/dependencies.cmake`) through `CMAKE_PROJECT_TOP_LEVEL_INCLUDES`.
 
 Requires CMake 3.24+ and C++23 (GCC 14+).
 
@@ -55,8 +50,7 @@ When sheen is pulled in via `add_subdirectory()` or installed and located with
 `find_package(sheen)`, supply its dependencies (`slot`, and per enabled backend
 `json20`, `fkYAML`, `yaml-cpp`) the way you manage the rest of your
 dependencies — a package manager, system packages, or your own dependency
-provider. You can reuse the provider in `cmake/dependencies.cmake` by passing it
-via `CMAKE_PROJECT_TOP_LEVEL_INCLUDES`.
+provider.
 
 ## Status
 

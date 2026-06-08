@@ -1,5 +1,14 @@
 cmake_minimum_required(VERSION 3.24)
 
+if(
+    CMAKE_SOURCE_DIR STREQUAL CMAKE_CURRENT_SOURCE_DIR
+    AND NOT DEFINED CMAKE_PROJECT_TOP_LEVEL_INCLUDES
+)
+    set(CMAKE_PROJECT_TOP_LEVEL_INCLUDES
+        "${CMAKE_CURRENT_LIST_DIR}/cmake/dependencies.cmake"
+    )
+endif()
+
 project(sheen VERSION 0.1.0 LANGUAGES CXX)
 
 option(
