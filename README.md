@@ -37,15 +37,20 @@ Backend per component is enabled via `SHEEN_<FORMAT>_ENABLE_<BACKEND>` and the d
 ## Building
 
 ```sh
-cmake --preset dev
-cmake --build --preset dev
-ctest --preset dev
+cmake -S . -B build
+cmake --build build
+ctest --test-dir build
 ```
 
 The library targets consume their dependencies via `find_package()` only; they
-do not fetch anything themselves. The `dev` preset makes a standalone clone
-self-contained by wiring in a FetchContent-backed dependency provider
-(`cmake/dependencies.cmake`) through `CMAKE_PROJECT_TOP_LEVEL_INCLUDES`.
+do not fetch anything themselves. For a standalone build, the root
+`CMakeLists.txt` automatically resolves them through a FetchContent-backed
+dependency provider (`cmake/dependencies.cmake`), so the commands above work
+with no extra flags. A `dev` preset that does the same is also available:
+
+```sh
+cmake --preset dev && cmake --build --preset dev && ctest --preset dev
+```
 
 Requires CMake 3.24+ and C++23 (GCC 14+).
 

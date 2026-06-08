@@ -1,5 +1,18 @@
 cmake_minimum_required(VERSION 3.24)
 
+# For a standalone build, resolve dependencies through the bundled FetchContent
+# dependency provider so that a plain `cmake -S . -B build` works with no extra
+# flags or presets. A dependency provider can only be registered while project()
+# processes CMAKE_PROJECT_TOP_LEVEL_INCLUDES, so this must run before project().
+# Builds that embed sheen via add_subdirectory(), or that supply their own
+# provider on the command line, are left untouched.
+if(CMAKE_SOURCE_DIR STREQUAL CMAKE_CURRENT_SOURCE_DIR
+   AND NOT DEFINED CMAKE_PROJECT_TOP_LEVEL_INCLUDES)
+    set(CMAKE_PROJECT_TOP_LEVEL_INCLUDES
+        "${CMAKE_CURRENT_LIST_DIR}/cmake/dependencies.cmake"
+    )
+endif()
+
 project(sheen VERSION 0.1.0 LANGUAGES CXX)
 
 option(
