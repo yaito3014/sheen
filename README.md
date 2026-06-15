@@ -1,6 +1,6 @@
 # sheen
 
-A header-only C++23 serialization library inspired by [cereal](https://github.com/USCiLab/cereal), built around named concepts, deducing-this, `std::expected`, and constexpr-end-to-end.
+A header-only C++23 serialization library inspired by [cereal](https://github.com/USCiLab/cereal), built around named concepts, deducing-this, `std::expected`, and partially constexpr.
 
 ## Quick taste
 
